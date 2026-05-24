@@ -48,7 +48,7 @@ Theme choice persists to `localStorage` under the key `theme` (authenticated are
 
 ## Customization
 
-This is a starter, not a framework. Edit the Vue pages directly — they're meant to be read top-to-bottom. Resist adding component libraries on top.
+This is a starter kit, not a framework. Edit the Vue pages directly — they're meant to be read top-to-bottom. Resist adding component libraries on top.
 
 ## License
 
