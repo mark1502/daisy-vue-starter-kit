@@ -9,7 +9,7 @@ A Laravel 13 starter kit with Inertia.js v3, Vue 3, Tailwind 4, daisyUI 5, Ziggy
 - **Tailwind CSS 4** + **daisyUI 5** with ~16 ready-to-use themes and a navbar theme picker
 - **Ziggy** for `route()` in Vue components
 - **Laravel Fortify** for authentication (headless — every view is an Inertia page)
-- **lucide-vue-next** for icons
+- **lucide/vue** for icons
 - Auth pages: login, register, forgot/reset password, email verification, password confirmation
 - Authenticated layout with navbar + theme picker, dashboard, settings (profile, password, delete account)
 
