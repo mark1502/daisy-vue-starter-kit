@@ -1,9 +1,9 @@
 {
     "$schema": "https://getcomposer.org/schema.json",
-    "name": "laravel/laravel",
+    "name": "mark1502/daisy-vue-starter-kit",
     "type": "project",
-    "description": "The skeleton application for the Laravel framework.",
-    "keywords": ["laravel", "framework"],
+    "description": "Laravel 13 + Inertia v3 + Vue 3 + Tailwind 4 + daisyUI 5 + Ziggy starter kit with Fortify authentication.",
+    "keywords": ["laravel", "starter-kit", "inertia", "vue", "tailwind", "daisyui", "fortify", "ziggy"],
     "license": "MIT",
     "require": {
         "php": "^8.3",
@@ -63,7 +63,8 @@
         "post-create-project-cmd": [
             "@php artisan key:generate --ansi",
             "@php -r \"file_exists('database/database.sqlite') || touch('database/database.sqlite');\"",
-            "@php artisan migrate --graceful --ansi"
+            "@php artisan migrate --graceful --ansi",
+            "npm install"
         ],
         "pre-package-uninstall": [
             "Illuminate\\Foundation\\ComposerScripts::prePackageUninstall"
