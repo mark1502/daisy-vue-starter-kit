@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Registration Process</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      font-size: 15px;
+      line-height: 1.6;
+      background: #f1f5f9;
+      color: #1e293b;
+    }
+
+    header {
+      background: #0f172a;
+      color: #e2e8f0;
+      padding: 0.85rem 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+    }
+
+    header h1 {
+      font-size: 1rem;
+      font-weight: 600;
+      letter-spacing: 0.01em;
+    }
+
+    .controls { display: flex; gap: 0.5rem; }
+
+    .btn {
+      background: transparent;
+      border: 1px solid rgba(255,255,255,0.25);
+      color: rgba(255,255,255,0.75);
+      padding: 0.3rem 0.8rem;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.78rem;
+      font-family: inherit;
+      transition: all 0.15s;
+    }
+
+    .btn:hover {
+      background: rgba(255,255,255,0.1);
+      color: white;
+      border-color: rgba(255,255,255,0.4);
+    }
+
+    main {
+      max-width: 820px;
+      margin: 1.5rem auto;
+      padding: 0 1rem 3rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    /* ── H2 section accordion ── */
+    details.section {
+      background: white;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    }
+
+    details.section > summary {
+      padding: 0.75rem 1rem;
+      font-size: 0.925rem;
+      font-weight: 600;
+      color: #1e293b;
+      background: #f8fafc;
+      cursor: pointer;
+      list-style: none;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      user-select: none;
+      transition: background 0.15s;
+    }
+
+    details.section > summary::-webkit-details-marker { display: none; }
+
+    details.section > summary::before {
+      content: '▶';
+      font-size: 0.6rem;
+      color: #6366f1;
+      transition: transform 0.2s ease;
+      flex-shrink: 0;
+    }
+
+    details.section[open] > summary::before { transform: rotate(90deg); }
+    details.section > summary:hover { background: #f1f5f9; }
+
+    .section-body {
+      padding: 1rem 1.1rem 1.1rem;
+      border-top: 1px solid #f1f5f9;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    /* ── H3 subsection accordion ── */
+    details.subsection {
+      border: 1px solid #e8ecf0;
+      border-radius: 6px;
+      overflow: hidden;
+    }
+
+    details.subsection > summary {
+      padding: 0.5rem 0.85rem;
+      font-size: 0.855rem;
+      font-weight: 700;
+      color: #334155;
+      background: #f8fafc;
+      cursor: pointer;
+      list-style: none;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      user-select: none;
+      transition: background 0.15s;
+    }
+
+    details.subsection > summary::-webkit-details-marker { display: none; }
+
+    details.subsection > summary::before {
+      content: '▶';
+      font-size: 0.55rem;
+      color: #a5b4fc;
+      transition: transform 0.2s ease;
+      flex-shrink: 0;
+    }
+
+    details.subsection[open] > summary::before { transform: rotate(90deg); }
+    details.subsection > summary:hover { background: #eef2f7; }
+
+    .subsection-body {
+      padding: 0.75rem 1rem 1rem;
+      border-top: 1px solid #f1f5f9;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    /* ── Markdown prose (shared by section-body and subsection-body) ── */
+    .section-body h3 {
+      font-size: 0.875rem;
+      font-weight: 700;
+      color: #1e293b;
+      margin-top: 1.1rem;
+      padding-bottom: 0.2rem;
+      border-bottom: 1px solid #f1f5f9;
+    }
+
+    .section-body h3:first-child { margin-top: 0; }
+
+    .section-body h4,
+    .subsection-body h4 {
+      font-size: 0.825rem;
+      font-weight: 700;
+      color: #334155;
+      margin-top: 0.75rem;
+    }
+
+    .section-body p,
+    .subsection-body p {
+      color: #374151;
+      line-height: 1.75;
+    }
+
+    .section-body ul, .section-body ol,
+    .subsection-body ul, .subsection-body ol {
+      padding-left: 1.4rem;
+      color: #374151;
+    }
+
+    .section-body li,
+    .subsection-body li { margin-bottom: 0.2rem; line-height: 1.65; }
+
+    .section-body strong,
+    .subsection-body strong { color: #0f172a; font-weight: 600; }
+
+    .section-body a,
+    .subsection-body a { color: #6366f1; text-decoration: underline; }
+
+    .section-body code,
+    .subsection-body code {
+      font-family: 'Cascadia Code', 'Fira Code', Consolas, 'Courier New', monospace;
+      font-size: 0.8em;
+      background: #eff6ff;
+      color: #4f46e5;
+      padding: 0.12em 0.38em;
+      border-radius: 4px;
+      border: 1px solid #dbeafe;
+    }
+
+    .section-body pre,
+    .subsection-body pre {
+      background: #0f172a;
+      border-radius: 8px;
+      padding: 1rem 1.1rem;
+      overflow-x: auto;
+    }
+
+    .section-body pre code,
+    .subsection-body pre code {
+      background: none;
+      color: #cbd5e1;
+      border: none;
+      padding: 0;
+      font-size: 0.8rem;
+      line-height: 1.65;
+    }
+
+    .section-body table,
+    .subsection-body table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.85rem;
+    }
+
+    .section-body thead th,
+    .subsection-body thead th {
+      background: #f8fafc;
+      padding: 0.45rem 0.75rem;
+      text-align: left;
+      font-weight: 600;
+      color: #475569;
+      border-bottom: 2px solid #e2e8f0;
+      font-size: 0.775rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      white-space: nowrap;
+    }
+
+    .section-body tbody td,
+    .subsection-body tbody td {
+      padding: 0.4rem 0.75rem;
+      border-bottom: 1px solid #f1f5f9;
+      color: #374151;
+      vertical-align: top;
+    }
+
+    .section-body tbody tr:last-child td,
+    .subsection-body tbody tr:last-child td { border-bottom: none; }
+
+    .section-body tbody tr:hover,
+    .subsection-body tbody tr:hover { background: #fafbfc; }
+
+    .section-body hr,
+    .subsection-body hr {
+      border: none;
+      border-top: 1px solid #e8ecf0;
+    }
+
+    .section-body blockquote,
+    .subsection-body blockquote {
+      border-left: 3px solid #6366f1;
+      padding: 0.25rem 0 0.25rem 0.9rem;
+      color: #475569;
+      font-style: italic;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>Registration Process</h1>
+  <div class="controls">
+    <button class="btn" onclick="expandAll()">Expand All</button>
+    <button class="btn" onclick="collapseAll()">Collapse All</button>
+  </div>
+</header>
+
+<main id="app"></main>
+
+<script type="text/x-markdown" id="source">
+# Registration Process
+
+## Overview
+
+Registration is handled by Laravel Fortify, with the frontend built in Vue 3 via Inertia.js. The process runs through five stages: rendering the form, submitting it, validating the input, creating the user, and redirecting after success.
+
+---
+
+## Step 1 — Displaying the Registration Form
+
+When a guest visits `/register`, Fortify's `RegisteredUserController@create` is called. Your `FortifyServiceProvider` has told Fortify to respond with an Inertia render:
+
+```php
+Fortify::registerView(fn () => Inertia::render('Auth/Register'));
+```
+
+Inertia returns the Vue component at `resources/js/Pages/Auth/Register.vue` as a full page response.
+
+---
+
+## Step 2 — The Frontend Form (`Register.vue`)
+
+The Vue component uses Inertia's `useForm` helper to manage four fields:
+
+```js
+const form = useForm({
+    name: '',
+    email: '',
+    password: '',
+    password_confirmation: '',
+})
+```
+
+When the user submits the form, Inertia sends an XHR `POST` to the `register` route. On completion (success or failure), the password fields are cleared:
+
+```js
+const submit = () => {
+    form.post(route('register'), {
+        onFinish: () => form.reset('password', 'password_confirmation'),
+    })
+}
+```
+
+Inertia handles CSRF automatically and keeps the page reactive — no full page reload occurs.
+
+---
+
+## Step 3 — Fortify Receives the POST
+
+Fortify's `RegisteredUserController@store` receives the request and delegates to the action class bound in your `FortifyServiceProvider`:
+
+```php
+Fortify::createUsersUsing(CreateNewUser::class);
+```
+
+---
+
+## Step 4 — Validation and User Creation (`CreateNewUser.php`)
+
+`App\Actions\Fortify\CreateNewUser::create()` runs a validator against the submitted input:
+
+| Field | Rules |
+|-------|-------|
+| `name` | required, string, max 255 |
+| `email` | required, valid email format, max 255, unique in `users` table |
+| `password` | required, meets `Password::default()` complexity rules, confirmed (must match `password_confirmation`) |
+
+If validation fails, Inertia returns the errors to the form and each field's `InputError` component displays the relevant message — the user stays on the registration page.
+
+If validation passes, the user record is created:
+
+```php
+return User::create([
+    'name'     => $input['name'],
+    'email'    => $input['email'],
+    'password' => Hash::make($input['password']),
+]);
+```
+
+The password is hashed with `Hash::make()` (bcrypt by default) and never stored in plain text. Emails are lowercased before saving (`'lowercase_usernames' => true` in `config/fortify.php`).
+
+---
+
+## Step 5 — Post-Registration
+
+After the user is created, Fortify:
+
+1. **Fires the `Registered` event** — this triggers Laravel's built-in listener that sends the email verification notification (because `Features::emailVerification()` is enabled).
+2. **Logs the user in automatically** — no separate login step is required.
+3. **Redirects to `/dashboard`** — the home path configured in `config/fortify.php`:
+
+```php
+'home' => '/dashboard',
+```
+
+Because email verification is enabled, routes protected by the `verified` middleware will redirect the user to `/email/verify` until they confirm their address.
+
+---
+
+## Summary Flow
+
+```
+GET /register
+  → FortifyServiceProvider tells Fortify to render Auth/Register via Inertia
+  → Vue form displayed to user
+
+User fills in name, email, password, password_confirmation and submits
+
+POST /register
+  → Fortify's RegisteredUserController receives the request
+  → Calls CreateNewUser::create()
+    → Validates input (fails → errors returned to form)
+    → Creates User with hashed password
+  → Fires Registered event (sends verification email)
+  → Logs user in
+  → Redirects to /dashboard
+```
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+<script>
+  marked.use({ gfm: true });
+
+  function processMarkdown(raw) {
+    const lines = raw.trim().split('\n');
+    let sections = [];
+    let current = null;
+
+    for (const line of lines) {
+      if (/^# /.test(line)) continue; // skip H1, it's in the header
+      if (/^## /.test(line)) {
+        if (current) sections.push(current);
+        current = { heading: line.slice(3).trim(), lines: [] };
+        continue;
+      }
+      if (current) current.lines.push(line);
+    }
+    if (current) sections.push(current);
+    return sections;
+  }
+
+  // Split a section's lines into subsections on ### headings.
+  // Returns array of { heading: string|null, lines: string[] }.
+  // A null heading means intro content before the first ###.
+  function splitSubsections(lines) {
+    const result = [];
+    let currentHeading = null;
+    let currentLines = [];
+
+    for (const line of lines) {
+      if (/^### /.test(line)) {
+        if (currentLines.length > 0 || currentHeading !== null) {
+          result.push({ heading: currentHeading, lines: currentLines });
+        }
+        currentHeading = line.slice(4).trim();
+        currentLines = [];
+      } else {
+        currentLines.push(line);
+      }
+    }
+    if (currentLines.length > 0 || currentHeading !== null) {
+      result.push({ heading: currentHeading, lines: currentLines });
+    }
+    return result;
+  }
+
+  function render() {
+    const raw = document.getElementById('source').textContent;
+    const sections = processMarkdown(raw);
+    const app = document.getElementById('app');
+
+    let html = '';
+    for (const s of sections) {
+      const headingHtml = marked.parseInline(s.heading);
+      const subsections = splitSubsections(s.lines);
+
+      let bodyHtml = '';
+      for (const sub of subsections) {
+        if (sub.heading === null) {
+          // Intro prose before the first subsection heading
+          bodyHtml += marked.parse(sub.lines.join('\n'));
+        } else {
+          const subHeadingHtml = marked.parseInline(sub.heading);
+          const subBodyHtml = marked.parse(sub.lines.join('\n'));
+          bodyHtml += `
+            <details class="subsection">
+              <summary>${subHeadingHtml}</summary>
+              <div class="subsection-body">${subBodyHtml}</div>
+            </details>`;
+        }
+      }
+
+      html += `
+        <details class="section">
+          <summary>${headingHtml}</summary>
+          <div class="section-body">${bodyHtml}</div>
+        </details>`;
+    }
+    app.innerHTML = html;
+  }
+
+  function expandAll()  { document.querySelectorAll('details').forEach(d => d.open = true); }
+  function collapseAll() { document.querySelectorAll('details').forEach(d => d.open = false); }
+
+  render();
+</script>
+</body>
+</html>

@@ -46,6 +46,10 @@ composer dev
 
 Theme choice persists to `localStorage` under the key `theme` (authenticated areas) and `authTheme` (guest/auth pages, light/dark only). The initial paint is set inline in `app.blade.php` to avoid FOUC.
 
+## Documentation
+
+There is documentation about the auth system used in the starter kit located in the docs folder which may be helpful in addition to the official Fortify documentation.  The documentation is available in markdown format and html with collapsable sections.
+
 ## Customization
 
 This is a starter kit, not a framework. Edit the Vue pages directly — they're meant to be read top-to-bottom. Resist adding component libraries on top.
