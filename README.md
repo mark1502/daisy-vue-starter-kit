@@ -46,6 +46,36 @@ composer dev
 
 Theme choice persists to `localStorage` under the key `theme` (authenticated areas) and `authTheme` (guest/auth pages, light/dark only). The initial paint is set inline in `app.blade.php` to avoid FOUC.
 
+## Navigation
+
+The main nav bar is driven by a single config file — **`resources/js/navigation.js`**.
+Add a link there and it appears in **both** the desktop bar and the mobile
+hamburger dropdown (one array, no duplicated markup).
+
+### Adding a link
+
+Add one row to `navItems`:
+
+```js
+export const navItems = [
+    { label: 'Dashboard', route: 'dashboard' },
+    { label: 'Projects', route: 'projects.index' },
+]
+```
+
+### Full options and details
+
+For all the details about adding links to the navbar and every available option —
+the complete field reference, the three ways to hide/disable a link, icons,
+tooltips, active styles, and layout/distribution — refer to the **Navbar and
+Links** documentation: [`docs/md_files/7. Navbar and Links.md`](docs/md_files/7.%20Navbar%20and%20Links.md)
+(also available as a collapsible HTML page at [`docs/html_files/navbar_and_links.html`](docs/html_files/navbar_and_links.html)).
+
+### Logo
+
+The **Flower** icon (left of the bar) is a placeholder brand/home link. Swap it
+for your own logo in `AuthenticatedLayout.vue` — it's marked with a comment.
+
 ## Documentation
 
 There is documentation about the auth system used in the starter kit located in the docs folder which may be helpful in addition to the official Fortify documentation.  The documentation is available in markdown format and html with collapsable sections.
