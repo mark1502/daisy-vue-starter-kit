@@ -66,9 +66,7 @@ export const navItems = [
 ### Full options and details
 
 For all the details about adding links to the navbar and every available option —
-the complete field reference, the three ways to hide/disable a link, icons,
-tooltips, active styles, and layout/distribution — refer to the **Navbar and
-Links** documentation: [`docs/md_files/7. Navbar and Links.md`](docs/md_files/7.%20Navbar%20and%20Links.md)
+refer to the **Navbar and Links** documentation: [`docs/md_files/7. Navbar and Links.md`](docs/md_files/7.%20Navbar%20and%20Links.md)
 (also available as a collapsible HTML page at [`docs/html_files/navbar_and_links.html`](docs/html_files/navbar_and_links.html)).
 
 ### Logo
