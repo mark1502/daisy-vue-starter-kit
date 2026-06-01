@@ -1,6 +1,6 @@
 # daisy-vue-starter-kit
 
-A Laravel 13 starter kit with Inertia.js v3, Vue 3, Tailwind 4, daisyUI 5, Ziggy, and Fortify-based authentication. Breeze-inspired posture (plain Vue, minimal abstraction) with daisyUI components instead of hand-rolled Tailwind markup.
+A Laravel 13 starter kit with Inertia.js v3, Vue 3, Tailwind 4, daisyUI 5, Ziggy, and Fortify-based authentication. Breeze-inspired posture (plain Vue, minimal abstraction) with daisyUI components instead of hand-rolled Tailwind markup.  It's a lightweight kit using Ziggy rather than Wayfinder and daisyUI for the ui, including theme support.
 
 ## What's included
 
@@ -49,8 +49,7 @@ Theme choice persists to `localStorage` under the key `theme` (authenticated are
 ## Navigation
 
 The main nav bar is driven by a single config file — **`resources/js/navigation.js`**.
-Add a link there and it appears in **both** the desktop bar and the mobile
-hamburger dropdown (one array, no duplicated markup).
+Add a link there and it appears in **both** the desktop bar and the mobile hamburger dropdown (one array, no duplicated markup).
 
 ### Adding a link
 
@@ -76,11 +75,11 @@ for your own logo in `AuthenticatedLayout.vue` — it's marked with a comment.
 
 ## Documentation
 
-There is documentation about the auth system used in the starter kit located in the docs folder which may be helpful in addition to the official Fortify documentation.  The documentation is available in markdown format and html with collapsable sections.
+Documentation about the auth system (fortify) and the starter kit is located in the docs folder.  The documentation is supplemental to the official Fortify documentation and is available in markdown format and also html with collapsable sections.
 
 ## Customization
 
-This is a starter kit, not a framework. Edit the Vue pages directly — they're meant to be read top-to-bottom. Resist adding component libraries on top.
+This is a starter kit, not a framework. Edit the Vue pages directly.
 
 ## License
 

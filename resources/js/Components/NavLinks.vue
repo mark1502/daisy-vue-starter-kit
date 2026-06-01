@@ -52,13 +52,19 @@ const grouped = computed(() => {
 const horizontalBase = {
     daisy: 'btn btn-ghost btn-sm',
     underline:
-        'inline-flex items-center gap-1.5 px-1 pb-1 text-sm font-medium border-b-2 border-transparent hover:text-primary transition-colors',
+        'inline-flex items-center gap-1.5 px-1 pb-1 text-sm font-medium border-b-2 hover:text-primary transition-colors',
     pill: 'inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm font-medium hover:bg-base-200 transition-colors',
 }
 const horizontalActive = {
     daisy: 'btn-active',
     underline: 'border-primary text-primary',
     pill: 'bg-primary text-primary-content',
+}
+// Inactive-state classes, applied only when a link is NOT active. Kept separate
+// so the active border color isn't fighting a base `border-transparent` for the
+// same `border-color` property (whichever wins is just CSS source order).
+const horizontalInactive = {
+    underline: 'border-transparent',
 }
 const menuActive = {
     daisy: 'menu-active',
@@ -71,7 +77,6 @@ const justifyMap = {
     start: 'justify-start',
     center: 'justify-center',
     end: 'justify-end',
-    around: 'justify-around',
 }
 const justifyClass = computed(() => justifyMap[navJustify] ?? justifyMap.between)
 
@@ -112,7 +117,7 @@ const linkClass = (item) => {
     const tooltip = tipText(item) ? 'tooltip tooltip-bottom' : ''
     return [
         horizontalBase[activeStyle],
-        isActive(item) ? horizontalActive[activeStyle] : '',
+        isActive(item) ? horizontalActive[activeStyle] : (horizontalInactive[activeStyle] ?? ''),
         reverse,
         tooltip,
         item.class,
@@ -141,11 +146,12 @@ const linkClass = (item) => {
         </li>
     </ul>
 
-    <!-- Desktop: single flex row; each populated group renders as a segment. -->
+    <!-- Desktop: single flex row. All three segments always render — empty ones
+         collapse to zero width but stay in the flex flow as placeholders, so
+         'justify-between' can anchor start/center/end against both edges. -->
     <nav v-else class="flex w-full items-center gap-1" :class="justifyClass">
         <div
             v-for="key in ['start', 'center', 'end']"
-            v-show="grouped[key].length"
             :key="key"
             class="flex items-center gap-1"
         >
