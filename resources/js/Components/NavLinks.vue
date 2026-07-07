@@ -80,9 +80,31 @@ const justifyMap = {
 }
 const justifyClass = computed(() => justifyMap[navJustify] ?? justifyMap.between)
 
-// Active when Ziggy's current route matches the item's `active` pattern
-// (falls back to its `route` name). Supports wildcards, e.g. 'reports.*'.
-const isActive = (item) => route().current(item.active ?? item.route)
+// Active-link resolution, two tiers:
+//
+// 1. Server override: if the current page has an `activeNav` prop (a string
+//    naming a nav item by its `route` value), that item is active and all
+//    others are not — pattern matching is skipped. Use this when one route
+//    serves multiple nav contexts and only the server knows which applies
+//    (e.g. a resource page reached from different sections). A string that
+//    matches no item lights nothing (convention: pass '~none' for that).
+//    Absent / null `activeNav` = tier 2 as usual, so existing apps are
+//    unaffected.
+//
+// 2. Pattern matching: Ziggy's current route against the item's `active`
+//    pattern (falls back to its `route` name). Supports wildcards, e.g.
+//    'reports.*', and arrays of patterns for items covering multiple
+//    route groups, e.g. ['boxes.*', 'links.*'].
+const isActive = (item) => {
+    const activeNav = page.props.activeNav
+    if (typeof activeNav === 'string') {
+        return item.route === activeNav
+    }
+    const patterns = item.active ?? item.route
+    return Array.isArray(patterns)
+        ? patterns.some((p) => route().current(p))
+        : route().current(patterns)
+}
 
 // --- Icons -----------------------------------------------------------------
 // An item's `icon` is either a string (image path -> <img>) or a component

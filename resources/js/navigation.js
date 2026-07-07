@@ -53,6 +53,8 @@ export const navItems = [
 // { label: 'Dashboard', route: 'dashboard', tooltip: 'Your activity at a glance' },
 
 // Example: a wildcard active pattern + auth-gated link, with a lucide icon
+// `active` also accepts an array of patterns, e.g. ['reports.*', 'exports.*'],
+// for a section that spans more than one route group.
 // {
 //   label: 'Reports',
 //   route: 'reports.index',
@@ -62,3 +64,10 @@ export const navItems = [
 //   icon: LayoutDashboard,               // lucide component (import it above)
 //   iconPosition: 'left',                // 'left' (default) | 'right'
 // },
+
+// Server-driven active link: the `activeNav` page prop
+// When one route serves multiple nav sections (e.g. a shared resource reached
+// from different tabs), pattern matching can't tell them apart — only the
+// server knows. Pass an `activeNav` Inertia prop naming a nav item's `route`
+// value, and that item lights up regardless of pattern matching.
+// See docs/md_files/7. Navbar and Links.md for the full explanation.

@@ -62,6 +62,9 @@ export const navItems = [
 ]
 ```
 
+Active-link highlighting is pattern-based by default, with an optional server-driven
+`activeNav` page-prop override for cases where one route serves multiple nav sections.
+
 ### Full options and details
 
 For all the details about adding links to the navbar and every available option —

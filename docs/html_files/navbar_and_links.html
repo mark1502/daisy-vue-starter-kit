@@ -332,9 +332,9 @@ else has a sensible default.
 
 ---
 
-## Link options (the item shape)
+## Link options
 
-Each entry in `navItems` is a plain object. Full shape:
+Each entry in `navItems` is a plain object with only 2 required properties:
 
 ```js
 {
@@ -358,7 +358,7 @@ Each entry in `navItems` is a plain object. Full shape:
 |-------|----------|---------|--------------|
 | `label` | **yes** | — | The text shown for the link, and its accessible name (the tooltip text too when `iconOnly`). Required on **every** link. A missing or whitespace-only label logs a dev-mode `console.warn` (no-op in production builds). |
 | `route` | **yes** | — | The Ziggy route name the link navigates to. Used as the link target and, if `active` is omitted, as the active-match pattern. |
-| `active` | no | the `route` value | The pattern passed to Ziggy's `route().current(...)` to decide if the link is "active". Lets you keep a link lit on routes other than its own target. **Supports wildcards**, e.g. `'reports.*'` keeps the link active on `reports.index`, `reports.show`, etc. |
+| `active` | no | the `route` value | The pattern passed to Ziggy's `route().current(...)` to decide if the link is "active". Lets you keep a link lit on routes other than its own target. **Supports wildcards**, e.g. `'reports.*'` keeps the link active on `reports.index`, `reports.show`, etc. **Also accepts an array of patterns**, e.g. `['docs.*', 'links.*']`, for a section spanning more than one route group — the link is active if *any* pattern matches. |
 | `group` | no | `'start'` | Which desktop segment the link sits in: `'start'`, `'center'`, or `'end'`. Ignored in the mobile dropdown (which is always a simple stacked list). |
 | `icon` | no | — | An icon for the link. Either a **lucide component** or an **image path string** (png/gif/svg). See [Icons](#icons) below. |
 | `iconPosition` | no | `'left'` | Which side of the label the icon sits on: `'left'` or `'right'`. |
@@ -378,8 +378,62 @@ should stay highlighted across a group of related routes:
 { label: 'Reports', route: 'reports.index', active: 'reports.*' }
 ```
 
-Under the hood this calls `route().current(item.active ?? item.route)`, so any
-pattern Ziggy's `current()` accepts works here.
+`active` also accepts an **array** of patterns, for a section that spans more than
+one route group:
+
+```js
+// "Storage" stays lit on any docs.* or links.* route
+{ label: 'Storage', route: 'docs.index', active: ['docs.*', 'links.*'] }
+```
+
+Under the hood, link activity resolves in two tiers. First, if the current page has
+an `activeNav` prop, it decides the active link directly (see
+[Server-driven active link](#server-driven-active-link-the-activenav-page-prop)
+below). Otherwise, the link's `active` pattern (or array of patterns, or the
+`route` value as a fallback) is checked against Ziggy's `route().current(...)`.
+
+---
+
+### Server-driven active link: the `activeNav` page prop
+
+Pattern matching can't always tell nav sections apart, because it only looks at
+the **route name** and sometimes two different sections may funnel into the
+**same route**.
+
+For example, imagine tabs "My Docs" (`active: 'docs.*'`) and "Docs Shared With Me"
+(`shared.index`), all viewing docs through a
+single `docs.show` route. When a user on "Docs Shared With Me" clicks into a doc,
+they land on `docs.show` — which matches `docs.*`, so "My Docs" on the navbar lights up
+even though they're looking at someone else's shared doc. The route name alone
+can't distinguish "my doc" from "a doc shared with me" —
+the URL is identical either way. Only the **server** knows the viewer's
+relationship to the resource.
+
+In the odd situation where the route name alone is insufficient to tell the navbar which tab is active, the fix is to let the server tell the navbar, by passing an
+`activeNav` Inertia page prop:
+
+```php
+return Inertia::render('Docs/Show', [
+    // ... other props ...
+    'activeNav' => $isOwner ? 'docs.index' : 'shared.index',
+]);
+```
+
+How it works:
+
+- `activeNav` is a **string** naming a nav item by its `route` value.
+- When present, the nav item whose `route` **exactly equals** that string is
+  active, and every other item is inactive — pattern matching is skipped
+  entirely for that render.
+- When `activeNav` is absent, `null`, or `undefined`, behavior is unchanged:
+  normal pattern matching (tier 2 above) applies. This makes the feature
+  **fully backwards compatible** — pages that don't set it behave in the default way.
+- A string that matches no item's `route` lights nothing. This is the
+  intentional way to say "no tab is active on this page" — the convention is
+  to pass `'~none'` for that case.
+
+You can also set `activeNav` app-wide from `HandleInertiaRequests::share()` if
+every page in your app should declare it, rather than passing it per-controller.
 
 ---
 
@@ -694,6 +748,8 @@ are unaffected by your `navItems` changes.
 7. Add an `icon` (lucide component and/or an image path), try `iconPosition: 'right'`
    and `iconOnly: true` — the icon should render in both the bar and the dropdown,
    and the icon-only link should show its label as a tooltip on hover.
+8. Temporarily pass `'activeNav' => 'some.route'` from a controller and confirm it
+   overrides pattern matching (only the matching item lights up), then remove it.
 
 ---
 

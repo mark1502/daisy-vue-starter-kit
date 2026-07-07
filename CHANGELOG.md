@@ -6,6 +6,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+### Added
+
+- `activeNav` page-prop override for `NavLinks.vue`: lets the server declare which nav item is active by its `route` name, for pages reachable from more than one nav section via the same route (pattern matching alone can't tell them apart).
+- Array-of-patterns support for a nav item's `active` field (e.g. `['boxes.*', 'links.*']`), for a section spanning more than one route group.
+
 ## [0.1.0] - 2026-05-23
 
 Initial release. Phases 0–6 and 8 of the build plan; Phase 7 (two-factor authentication) is deferred.
