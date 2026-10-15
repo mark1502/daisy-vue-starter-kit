@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -14,7 +15,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/password', fn () => Inertia::render('Settings/Password'))->name('password.edit');
         Route::get('/account', fn () => Inertia::render('Settings/DeleteAccount'))->name('account.edit');
 
-        Route::delete('/account', function (\Illuminate\Http\Request $request) {
+        Route::delete('/account', function (Request $request) {
             $request->validate([
                 'password' => ['required', 'current_password'],
             ]);
