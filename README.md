@@ -15,6 +15,12 @@ A Laravel 13 starter kit with Inertia.js v3, Vue 3, Tailwind 4, daisyUI 5, Ziggy
 
 Two-factor authentication is wired into the User model and migrations but disabled by default — flip the feature on in `config/fortify.php` to enable it.
 
+## Requirements
+
+- PHP 8.5+ with the `zip` extension (required by Laravel Dusk, a dev dependency)
+- Node.js 22+
+- Composer 2
+
 ## Installation
 
 ```bash
@@ -37,14 +43,14 @@ composer dev
 
 - `resources/js/Pages/Auth/` — Fortify-backed auth pages
 - `resources/js/Pages/Settings/` — profile, password, delete-account
-- `resources/js/Components/` — `GuestLayout`, `AuthenticatedLayout`, `ThemePicker`, `AuthThemeToggle`, form helpers
+- `resources/js/Components/` — `GuestLayout`, `AuthenticatedLayout`, `ThemePicker`, `GuestThemeToggle`, form helpers
 - `resources/js/Composables/useTheme.js` — theme state and persistence
 - `resources/css/app.css` — Tailwind 4 entry plus daisyUI theme definitions
 - `app/Providers/FortifyServiceProvider.php` — binds every Fortify view to an Inertia render call
 
 ## Themes
 
-Theme choice persists to `localStorage` under the key `theme` (authenticated areas) and `authTheme` (guest/auth pages, light/dark only). The initial paint is set inline in `app.blade.php` to avoid FOUC.
+Theme choice persists to `localStorage` under the key `theme` (authenticated areas) and `guestTheme` (guest/auth pages, light/dark only). The initial paint is set inline in `app.blade.php` to avoid FOUC.
 
 ## Navigation
 
@@ -79,6 +85,33 @@ for your own logo in `AuthenticatedLayout.vue` — it's marked with a comment.
 ## Documentation
 
 Documentation about the auth system (fortify) and the starter kit is located in the docs folder.  The documentation is supplemental to the official Fortify documentation and is available in markdown format and also html with collapsable sections.
+
+## Testing
+
+Feature tests (PHPUnit) cover every enabled Fortify flow and the settings pages:
+
+```bash
+composer test
+```
+
+Browser tests use [Laravel Dusk](https://laravel.com/docs/dusk) and live in `tests/Browser`. One-time setup:
+
+```bash
+cp .env.dusk.example .env.dusk.local
+php artisan key:generate --env=dusk.local
+touch database/dusk.sqlite
+php artisan dusk:chrome-driver --detect
+npm run build
+```
+
+Then start a server on the URL from `.env.dusk.local` and run the suite:
+
+```bash
+php artisan serve --host=127.0.0.1 --port=8010   # in a separate terminal
+php artisan dusk
+```
+
+Dusk swaps `.env.dusk.local` in for `.env` while it runs, so the browser tests use their own SQLite database.
 
 ## Customization
 
