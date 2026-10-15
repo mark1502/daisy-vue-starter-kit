@@ -29,7 +29,7 @@ cd my-app
 composer dev
 ```
 
-`composer dev` runs the PHP server, queue listener, and Vite dev server concurrently.
+`composer dev` (or `php artisan dev`) runs the PHP server, queue listener, and Vite dev server together. On macOS and Linux it uses the [`@laravel/multiplex`](https://www.npmjs.com/package/@laravel/multiplex) tabbed TUI; on Windows, Laravel falls back to `concurrently` with prefixed, interleaved output.
 
 Or use composer directly:
 

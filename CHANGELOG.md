@@ -16,6 +16,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 ### Changed
 
 - Minimum PHP version raised to 8.5.
+- `composer dev` now runs `php artisan dev`, which uses the `@laravel/multiplex` TUI on macOS/Linux (optional npm dependency) and `concurrently` on Windows.
 - Upgraded to Laravel 13.36, Fortify 1.41, inertia-laravel 3.5, Ziggy 2.6.5, PHPUnit 13, Pint 1.32.
 - Upgraded to @inertiajs/vue3 3.9, Vue 3.5.44, Vite 8.3, Tailwind 4.3.3, daisyUI 5.7, laravel-vite-plugin 3.2, concurrently 10, @lucide/vue 1.57.
 - Synced config with the current Laravel skeleton (cache `storage` store and separate lock path, `monthly` log channel, daily log `max_files`, JSON exception rendering for `api/*` and JSON requests).
