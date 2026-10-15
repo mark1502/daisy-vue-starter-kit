@@ -15,6 +15,10 @@ createInertiaApp({
             import.meta.glob('./Pages/**/*.vue'),
         ),
     setup({ el, App, props, plugin }) {
+        // Apply the saved theme before mounting so components (e.g. GuestThemeToggle)
+        // can override it in onMounted without being clobbered afterwards.
+        useTheme().initTheme();
+
         createApp({ render: () => h(App, props) })
             .use(plugin)
             .use({
@@ -23,7 +27,6 @@ createInertiaApp({
                 },
             })
             .mount(el);
-        useTheme().initTheme();
     },
     progress: {
         color: '#4B5563',
